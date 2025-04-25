@@ -230,4 +230,15 @@
   </script>
 </body>
 </html>
+function saveTasks() {
+  localStorage.setItem("checklist-data", JSON.stringify(taskData));
+}
+
+function loadTasks() {
+  const saved = localStorage.getItem("checklist-data");
+  if (saved) {
+    taskData = JSON.parse(saved);
+    renderTasks(); // função que recria a interface
+  }
+}
 
