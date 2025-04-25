@@ -1,10 +1,10 @@
-# CheckListSemanal
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checklist Semanal</title>
+  <link rel="manifest" href="manifest.json">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -127,19 +127,19 @@
     <div class="weekday" onclick="changeDay('sabado')">Sáb</div>
   </div>
 
-  <div class="section" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <div class="section">
     <h2>☀️ Manhã</h2>
     <ul id="manha"></ul>
     <button class="add-btn" onclick="addTask('manha')">+ Adicionar tarefa</button>
   </div>
 
-  <div class="section" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <div class="section">
     <h2>🌤 Tarde</h2>
     <ul id="tarde"></ul>
     <button class="add-btn" onclick="addTask('tarde')">+ Adicionar tarefa</button>
   </div>
 
-  <div class="section" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <div class="section">
     <h2>🌙 Noite</h2>
     <ul id="noite"></ul>
     <button class="add-btn" onclick="addTask('noite')">+ Adicionar tarefa</button>
@@ -149,96 +149,6 @@
     Organize sua semana com autonomia e flexibilidade.
   </div>
 
-  <script>
-    let dragged;
-    let currentDay = 'segunda';
-    const weekData = {};
-
-    const defaultTasks = {
-      manha: [],
-      tarde: [],
-      noite: []
-    };
-
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
-
-    function drag(ev) {
-      dragged = ev.target;
-      ev.target.classList.add("dragging");
-    }
-
-    function drop(ev) {
-      ev.preventDefault();
-      const ul = ev.target.closest("ul");
-      if (ul && dragged) {
-        ul.appendChild(dragged);
-        dragged.classList.remove("dragging");
-      }
-    }
-
-    function addTask(sectionId, texto = 'Nova tarefa') {
-      const ul = document.getElementById(sectionId);
-      const li = document.createElement("li");
-      li.draggable = true;
-      li.ondragstart = drag;
-      li.innerHTML = `<input type='checkbox'> <span contenteditable='true'>${texto}</span> <button class='delete-btn' onclick='this.parentElement.remove()'>X</button>`;
-      ul.appendChild(li);
-    }
-
-    function saveCurrentDay() {
-      weekData[currentDay] = {
-        manha: getTasks('manha'),
-        tarde: getTasks('tarde'),
-        noite: getTasks('noite')
-      };
-    }
-
-    function loadDay(day) {
-      document.querySelectorAll('.weekday').forEach(w => w.classList.remove('active'));
-      document.querySelector(`.weekday[onclick*="${day}"]`).classList.add('active');
-
-      clearTasks();
-
-      const data = weekData[day] || defaultTasks;
-      data.manha.forEach(t => addTask('manha', t));
-      data.tarde.forEach(t => addTask('tarde', t));
-      data.noite.forEach(t => addTask('noite', t));
-    }
-
-    function changeDay(day) {
-      saveCurrentDay();
-      currentDay = day;
-      loadDay(day);
-    }
-
-    function getTasks(periodo) {
-      const ul = document.getElementById(periodo);
-      return Array.from(ul.children).map(li => li.querySelector('span').innerText);
-    }
-
-    function clearTasks() {
-      ['manha', 'tarde', 'noite'].forEach(p => {
-        document.getElementById(p).innerHTML = '';
-      });
-    }
-
-    window.onload = () => {
-      loadDay(currentDay);
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
-function saveTasks() {
-  localStorage.setItem("checklist-data", JSON.stringify(taskData));
-}
-
-function loadTasks() {
-  const saved = localStorage.getItem("checklist-data");
-  if (saved) {
-    taskData = JSON.parse(saved);
-    renderTasks(); // função que recria a interface
-  }
-}
-
