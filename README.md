@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checklist Semanal</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="theme-color" content="#4CAF50">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -150,5 +152,14 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+        console.log('Service Worker registrado com sucesso:', registration);
+      }).catch(function(error) {
+        console.log('Falha ao registrar o Service Worker:', error);
+      });
+    }
+  </script>
 </body>
 </html>
